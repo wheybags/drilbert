@@ -27,6 +27,10 @@ function love.keypressed(key)
   if key == "space" then
     game_state.activate(state)
   end
+
+  if key == "r" then
+    game_state.load_level(state, state.level_index)
+  end
 end
 
 

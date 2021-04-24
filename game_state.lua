@@ -7,16 +7,17 @@ local levels =
   require("level.gather_oxygen").layers[1],
   require("level.explain_push").layers[1],
   require("level.push_puzzle_basic").layers[1],
+  require("level.winner").layers[1],
 }
 
 game_state.new = function()
-  local level_data = levels[1]
-
   local state =
   {
-    width = level_data.width,
-    height = level_data.height,
-    data = level_data.data,
+    level_index = 1,
+
+    width = 0,
+    height = 0,
+    data = {},
 
     player_pos = {0, 0},
     player_dir = "down",
@@ -26,8 +27,24 @@ game_state.new = function()
     connected = true,
 
     dead = false,
-    level_win = false,
   }
+
+  game_state.load_level(state, state.level_index)
+
+  return state
+end
+
+game_state.load_level = function(state, level_index)
+  local level_data = levels[level_index]
+
+  state.level_index = level_index
+  state.width = level_data.width
+  state.height = level_data.height
+  state.data = {unpack(level_data.data)}
+  state.player_dir = "down"
+  state.dirt = 0
+  state.oxygen = constants.max_oxygen
+  state.dead = false
 
   for y = 0, level_data.height-1 do
     for x = 0, level_data.width-1 do
@@ -38,8 +55,10 @@ game_state.new = function()
   end
 
   game_state._on_update(state)
+end
 
-  return state
+game_state.next_level = function(state)
+  game_state.load_level(state, state.level_index + 1)
 end
 
 game_state.index = function(level_data, x, y)
@@ -82,7 +101,7 @@ game_state._get_target = function(state, offset)
 end
 
 game_state.move = function(state, direction)
-  if state.dead or state.level_win then
+  if state.dead then
     return
   end
 
@@ -123,12 +142,12 @@ game_state.move = function(state, direction)
   end
 
   if target_tile == constants.exit_tile_id and not state.dead then
-    state.level_win = true
+    game_state.next_level(state)
   end
 end
 
 game_state.activate = function(state)
-  if state.dead or state.level_win then
+  if state.dead then
     return
   end
 
