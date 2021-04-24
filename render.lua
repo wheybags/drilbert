@@ -12,6 +12,8 @@ end
 render.setup = function()
   render.tileset = render._load_tex("gfx/tileset.png")
   render.player = render._load_tex("gfx/player.png")
+  render.oxygen = render._load_tex("gfx/oxygen.png")
+  render.dead = render._load_tex("gfx/dead.png")
 
   render.tileset_quads = {}
 
@@ -76,7 +78,7 @@ render._draw_on_tile = function(x, y, image, rotation_deg)
                      constants.tile_size/2, constants.tile_size/2)
 end
 
-render.render_level = function(state)
+render.render_level = function(state, render_tick)
   for y = 0, state.height-1 do
     for x = 0, state.width-1 do
       render._draw_tile(x, y, game_state.index(state, x, y))
@@ -103,6 +105,22 @@ render.render_level = function(state)
     render._draw_tile(x, hud_y, constants.dirt_tile_id)
   end
 
+  local oxy_x = 8
+
+  if state.dead then
+    render._draw_on_tile(oxy_x, hud_y, render.dead)
+  else
+
+    local do_oxy = state.level_win or state.connected or render_tick % 60 < 30
+
+
+    if do_oxy then
+      for d=0, state.oxygen-1 do
+        local x = oxy_x + d
+        render._draw_on_tile(x, hud_y, render.oxygen)
+      end
+    end
+  end
 end
 
 
