@@ -44,22 +44,34 @@ render._draw_tile = function(x, y, tile_index)
                      0, constants.render_scale, constants.render_scale)
 end
 
-render._draw_on_tile = function(x, y, image)
-   love.graphics.draw(image,
-                      x * constants.tile_size * constants.render_scale,
-                      y * constants.tile_size * constants.render_scale,
-                      0, constants.render_scale, constants.render_scale)
+render._draw_on_tile = function(x, y, image, rotation_deg)
+  if rotation_deg == nil then rotation_deg = 0 end
+
+  love.graphics.draw(image,
+                     (x + 0.5) * constants.tile_size * constants.render_scale,
+                     (y + 0.5) * constants.tile_size * constants.render_scale,
+                     rotation_deg * 0.01745329, constants.render_scale, constants.render_scale,
+                     constants.tile_size/2, constants.tile_size/2)
 end
 
-render.render_level = function(level_data)
-  for y = 0, level_data.height-1 do
-    for x = 0, level_data.width-1 do
-      render._draw_tile(x, y, game_state.index(level_data, x, y))
+render.render_level = function(state)
+  for y = 0, state.height-1 do
+    for x = 0, state.width-1 do
+      render._draw_tile(x, y, game_state.index(state, x, y))
     end
   end
 
-  render._draw_on_tile(level_data.player_pos[1], level_data.player_pos[2], render.player)
-end
+  local rotation = 0
+  if state.player_dir == "right" then
+    rotation = 90
+  elseif state.player_dir == "down" then
+    rotation = 180
+  elseif state.player_dir == "left" then
+    rotation = 270
+  end
+
+  render._draw_on_tile(state.player_pos[1], state.player_pos[2], render.player, rotation)
+  end
 
 
-return render
+  return render
