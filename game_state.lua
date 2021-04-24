@@ -3,7 +3,7 @@ local game_state = {}
 local constants = require("constants")
 
 game_state.new = function()
-  local level_data = require("level.level_01").layers[1]
+  local level_data = require("level.level_02").layers[1]
 
   local state =
   {
@@ -51,17 +51,19 @@ game_state._set = function(level_data, x, y, tile_id)
   level_data.data[index] = tile_id + 1
 end
 
-game_state._get_target = function(state)
+game_state._get_target = function(state, offset)
+  if offset == nil then offset = 1 end
+
   local move = {0, 0}
 
   if state.player_dir == "right" then
-    move[1] = 1
+    move[1] = offset
   elseif state.player_dir == "left" then
-    move[1] = -1
+    move[1] = -offset
   elseif state.player_dir == "down" then
-    move[2] = 1
+    move[2] = offset
   elseif state.player_dir == "up" then
-    move[2] = -1
+    move[2] = -offset
   end
 
   local target = {state.player_pos[1] + move[1], state.player_pos[2] + move[2]}
@@ -84,10 +86,22 @@ game_state.move = function(state, direction)
 
   local target = game_state._get_target(state)
   if target == nil then return end
-
   local target_tile = game_state.index(state, target[1], target[2])
-  if target_tile ~= constants.air_tile_id and target_tile ~= constants.spawn_tile_id and target_tile ~= constants.exit_tile_id then
+
+
+  local target2 = game_state._get_target(state, 2)
+  local target2_tile
+  if target2 ~= nil then target2_tile = game_state.index(state, target2[1], target2[2]) end
+
+  local need_push = target_tile ~= constants.air_tile_id and target_tile ~= constants.spawn_tile_id and target_tile ~= constants.exit_tile_id
+
+  if need_push and target2_tile ~= constants.air_tile_id then
     return
+  end
+
+  if need_push then
+    game_state._set(state, target[1], target[2], constants.air_tile_id)
+    game_state._set(state, target2[1], target2[2], target_tile)
   end
 
   if not state.connected then
