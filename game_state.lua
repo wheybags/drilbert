@@ -2,8 +2,15 @@ local game_state = {}
 
 local constants = require("constants")
 
+local levels =
+{
+  require("level.gather_oxygen").layers[1],
+  require("level.explain_push").layers[1],
+  require("level.push_puzzle_basic").layers[1],
+}
+
 game_state.new = function()
-  local level_data = require("level.level_03").layers[1]
+  local level_data = levels[1]
 
   local state =
   {
