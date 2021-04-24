@@ -13,6 +13,8 @@ game_state.new = function()
 
     player_pos = {0, 0},
     player_dir = "down",
+
+    dirt = 3,
   }
 
   for y = 0, level_data.height-1 do
@@ -87,9 +89,19 @@ game_state.activate = function(state)
   local target_tile = game_state.index(state, target[1], target[2])
 
   if target_tile == constants.dirt_tile_id then
+    if state.dirt == constants.max_dirt then
+      return
+    end
+
     game_state._set(state, target[1], target[2], constants.air_tile_id)
+    state.dirt = state.dirt + 1
   elseif target_tile == constants.air_tile_id then
+    if state.dirt == 0 then
+      return
+    end
+
     game_state._set(state, target[1], target[2], constants.dirt_tile_id)
+    state.dirt = state.dirt - 1
   end
 
 end

@@ -39,7 +39,7 @@ render.setup = function()
   local usable_width = width * 0.8
   local usable_height = height * 0.8
 
-  local target_tile_size = {15, 18}
+  local target_tile_size = constants.screen_size
 
   local size = {target_tile_size[1] * constants.tile_size, target_tile_size[2] * constants.tile_size}
   render.scale = 1
@@ -54,7 +54,6 @@ render.setup = function()
   end
 
   love.window.setMode(size[1] * render.scale, size[2] * render.scale)
-
 end
 
 render._draw_tile = function(x, y, tile_index)
@@ -94,7 +93,17 @@ render.render_level = function(state)
   end
 
   render._draw_on_tile(state.player_pos[1], state.player_pos[2], render.player, rotation)
+
+
+  local hud_y = constants.level_area[2] + 1
+
+  local dirt_x = 3
+  for d=0, state.dirt-1 do
+    local x = dirt_x + d
+    render._draw_tile(x, hud_y, constants.dirt_tile_id)
   end
 
+end
 
-  return render
+
+return render
