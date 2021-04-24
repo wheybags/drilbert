@@ -3,7 +3,7 @@ local game_state = {}
 local constants = require("constants")
 
 game_state.new = function()
-  local level_data = require("level.level_02").layers[1]
+  local level_data = require("level.level_03").layers[1]
 
   local state =
   {
@@ -104,6 +104,10 @@ game_state.move = function(state, direction)
     game_state._set(state, target2[1], target2[2], target_tile)
   end
 
+  state.player_pos = target
+
+  game_state._on_update(state)
+
   if not state.connected then
     state.oxygen = state.oxygen - 1
     if state.oxygen == 0 then
@@ -111,9 +115,7 @@ game_state.move = function(state, direction)
     end
   end
 
-  state.player_pos = target
-
-  if target_tile == constants.exit_tile_id then
+  if target_tile == constants.exit_tile_id and not state.dead then
     state.level_win = true
   end
 end
