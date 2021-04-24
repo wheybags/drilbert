@@ -32,6 +32,29 @@ render.setup = function()
       idx = idx + 1
     end
   end
+
+  local _, _, flags = love.window.getMode()
+  local width, height = love.window.getDesktopDimensions(flags.display)
+
+  local usable_width = width * 0.8
+  local usable_height = height * 0.8
+
+  local target_tile_size = {15, 18}
+
+  local size = {target_tile_size[1] * constants.tile_size, target_tile_size[2] * constants.tile_size}
+  render.scale = 1
+
+  while true do
+    local next_size = {size[1] * render.scale, size[2] * render.scale}
+    if next_size[1] > usable_width or next_size[2] > usable_height then
+      break
+    end
+
+    render.scale = render.scale + 1
+  end
+
+  love.window.setMode(size[1] * render.scale, size[2] * render.scale)
+
 end
 
 render._draw_tile = function(x, y, tile_index)
@@ -39,18 +62,18 @@ render._draw_tile = function(x, y, tile_index)
 
   love.graphics.draw(render.tileset,
                      render.tileset_quads[tile_index],
-                     x * constants.tile_size * constants.render_scale,
-                     y * constants.tile_size * constants.render_scale,
-                     0, constants.render_scale, constants.render_scale)
+                     x * constants.tile_size * render.scale,
+                     y * constants.tile_size * render.scale,
+                     0, render.scale, render.scale)
 end
 
 render._draw_on_tile = function(x, y, image, rotation_deg)
   if rotation_deg == nil then rotation_deg = 0 end
 
   love.graphics.draw(image,
-                     (x + 0.5) * constants.tile_size * constants.render_scale,
-                     (y + 0.5) * constants.tile_size * constants.render_scale,
-                     rotation_deg * 0.01745329, constants.render_scale, constants.render_scale,
+                     (x + 0.5) * constants.tile_size * render.scale,
+                     (y + 0.5) * constants.tile_size * render.scale,
+                     rotation_deg * 0.01745329, render.scale, render.scale,
                      constants.tile_size/2, constants.tile_size/2)
 end
 
