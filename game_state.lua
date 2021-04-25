@@ -4,6 +4,9 @@ local constants = require("constants")
 
 local levels =
 {
+  require("level.basic_move").layers[1],
+  require("level.basic_dig").layers[1],
+  require("level.place_dirt").layers[1],
   require("level.gather_oxygen").layers[1],
   require("level.explain_push").layers[1],
   require("level.push_puzzle_basic").layers[1],
