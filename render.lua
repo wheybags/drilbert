@@ -18,6 +18,11 @@ render.setup = function()
   render.level_messages = {}
   render.level_messages[2] = render._load_tex("gfx/spacebar.png")
 
+  render.logo = {
+    render._load_tex("gfx/logo_01.png"),
+    render._load_tex("gfx/logo_02.png"),
+  }
+
   render.tileset_quads = {}
 
   local w
@@ -193,9 +198,24 @@ render._render_gui = function(state, render_tick)
   end
 end
 
-render.render = function(state, render_tick)
+render.render_title = function(render_tick)
   love.graphics.clear(16/255, 25/255, 28/255)
 
+  local logo_w
+  local logo_h
+  logo_w, logo_h = render.logo[1]:getDimensions()
+  logo_w = logo_w / constants.tile_size
+  logo_h = logo_h / constants.tile_size
+
+  local frame_ticks = 60/2
+  local logo_ticks = frame_ticks * #render.logo
+
+  local frame = math.floor((render_tick % logo_ticks) / frame_ticks) + 1
+  render._draw_on_tile(constants.level_area[1]/2 - logo_w/2, constants.level_area[2]/2 - logo_h/2, render.logo[frame])
+end
+
+render.render_game = function(state, render_tick)
+  love.graphics.clear(16/255, 25/255, 28/255)
   render._render_level(state, render_tick)
   render._render_gui(state, render_tick)
 end

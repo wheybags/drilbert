@@ -1,6 +1,6 @@
 
 function love.conf(t)
-  t.window.title = "???"         -- The window title (string)
+  t.window.title = "Drilbert"         -- The window title (string)
   t.window.icon = nil                 -- Filepath to an image to use as the window's icon (string)
   t.window.width = 1920                -- The window width (number)
   t.window.height = 1080               -- The window height (number)

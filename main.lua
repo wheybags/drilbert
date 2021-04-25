@@ -18,7 +18,6 @@ end
 
 function love.load()
   render.setup()
-  state = game_state.new()
 
   music = love.audio.newSource("/sfx/Coming After You.wav", "stream")
   music:setLooping(true)
@@ -27,8 +26,11 @@ end
 
 function love.draw()
   if state then
-    render.render(state, render_tick)
+    render.render_game(state, render_tick)
+  else
+    render.render_title(render_tick)
   end
+
 end
 
 function love.resize()
@@ -36,17 +38,26 @@ function love.resize()
 end
 
 function love.keypressed(key)
+  if key == "r" then
+    music_normal()
+
+    if state == nil then
+      state = game_state.new()
+    end
+
+    game_state.load_level(state, state.level_index)
+  end
+
+  if state == nil then
+    return
+  end
+
   if key == "right" or key == "left" or key == "up" or key == "down" then
     game_state.move(state, key)
   end
 
   if key == "space" then
     game_state.activate(state)
-  end
-
-  if key == "r" then
-    music_normal()
-    game_state.load_level(state, state.level_index)
   end
 end
 
