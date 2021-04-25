@@ -119,7 +119,7 @@ game_state.move = function(state, direction)
   local target2_tile
   if target2 ~= nil then target2_tile = game_state.index(state, target2[1], target2[2]) end
 
-  local need_push = target_tile ~= constants.air_tile_id and target_tile ~= constants.spawn_tile_id and target_tile ~= constants.exit_tile_id
+  local need_push = target_tile == constants.dirt_tile_id or target_tile == constants.stone_tile_id
 
   if need_push and target2_tile ~= constants.air_tile_id then
     return
@@ -128,6 +128,13 @@ game_state.move = function(state, direction)
   if need_push then
     game_state._set(state, target[1], target[2], constants.air_tile_id)
     game_state._set(state, target2[1], target2[2], target_tile)
+  end
+
+  target = game_state._get_target(state)
+  target_tile = game_state.index(state, target[1], target[2])
+
+  if target_tile ~= constants.air_tile_id and target_tile ~= constants.spawn_tile_id and target_tile ~= constants.exit_tile_id then
+    return
   end
 
   state.player_pos = target
