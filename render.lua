@@ -126,7 +126,9 @@ render.render_level = function(state, render_tick)
   local oxy_x = 8
 
   if state.dead then
-    render._draw_on_tile(oxy_x, hud_y, render.dead)
+    if render_tick % 60 < 30 then
+      render._draw_on_tile(oxy_x - 1, hud_y, render.dead)
+    end
   else
 
     local do_oxy = state.level_win or state.connected or render_tick % 60 < 30
