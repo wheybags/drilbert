@@ -43,7 +43,7 @@ game_state.new = function()
     bedrock_layer = {},
 
     player_pos = {0, 0},
-    player_dir = "down",
+    player_dir = "up",
 
     dirt = 0,
     oxygen = constants.max_oxygen,
@@ -64,7 +64,7 @@ game_state.load_level = function(state, level_index)
   state.width = level_data.width
   state.height = level_data.height
   state.data = {unpack(level_data.data)}
-  state.player_dir = "down"
+  state.player_dir = "up"
   state.dirt = 0
   state.oxygen = constants.max_oxygen
   state.dead = false

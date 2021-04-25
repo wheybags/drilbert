@@ -91,7 +91,7 @@ render._draw_on_tile = function(x, y, image, rotation_deg)
                      constants.tile_size/2, constants.tile_size/2)
 end
 
-render._render_level = function(state)
+render._render_level = function(state, render_tick)
   for y = 0, state.height-1 do
     for x = 0, state.width-1 do
       render._draw_tile(x, y, game_state.index(state, x, y, state.dirt_layer))
@@ -116,16 +116,34 @@ render._render_level = function(state)
     end
   end
 
+  local y_off = 0
+  local x_off = 0
   local rotation = 0
-  if state.player_dir == "right" then
-    rotation = 90
-  elseif state.player_dir == "down" then
-    rotation = 180
-  elseif state.player_dir == "left" then
-    rotation = 270
+
+  if not state.dead then
+    if state.player_dir == "right" then
+      rotation = 90
+      x_off = 1/constants.tile_size
+    elseif state.player_dir == "down" then
+      rotation = 180
+      y_off = 1/constants.tile_size
+    elseif state.player_dir == "left" then
+      rotation = 270
+      x_off = -1/constants.tile_size
+    elseif state.player_dir == "up" then
+      rotation = 0
+      y_off = -1/constants.tile_size
+    end
+
+    if render_tick % 60 < 30 then
+      x_off = 0
+      y_off = 0
+    end
   end
 
-  render._draw_on_tile(state.player_pos[1], state.player_pos[2], render.player, rotation)
+  if not state.dead or render_tick % 30 < 15 then
+    render._draw_on_tile(state.player_pos[1] + x_off, state.player_pos[2] + y_off, render.player, rotation)
+  end
 end
 
 render._render_gui = function(state, render_tick)
@@ -178,7 +196,7 @@ end
 render.render = function(state, render_tick)
   love.graphics.clear(16/255, 25/255, 28/255)
 
-  render._render_level(state)
+  render._render_level(state, render_tick)
   render._render_gui(state, render_tick)
 end
 
