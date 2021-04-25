@@ -11,7 +11,7 @@ end
 
 function love.draw()
   if state then
-    render.render_level(state, render_tick)
+    render.render(state, render_tick)
   end
 end
 

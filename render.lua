@@ -88,9 +88,7 @@ render._draw_on_tile = function(x, y, image, rotation_deg)
                      constants.tile_size/2, constants.tile_size/2)
 end
 
-render.render_level = function(state, render_tick)
-  love.graphics.clear(16/255, 25/255, 28/255)
-
+render._render_level = function(state)
   for y = 0, state.height-1 do
     for x = 0, state.width-1 do
       render._draw_tile(x, y, game_state.index(state, x, y, state.dirt_layer))
@@ -113,7 +111,24 @@ render.render_level = function(state, render_tick)
   end
 
   render._draw_on_tile(state.player_pos[1], state.player_pos[2], render.player, rotation)
+end
 
+render._render_gui = function(state, render_tick)
+
+  render._draw_tile(0, constants.level_area[2], constants.frame_tl)
+  render._draw_tile(constants.level_area[1]-1, constants.level_area[2], constants.frame_tr)
+  render._draw_tile(0, constants.screen_size[2]-1, constants.frame_bl)
+  render._draw_tile(constants.level_area[1]-1, constants.screen_size[2]-1, constants.frame_br)
+
+  for x=1,constants.level_area[1]-2 do
+    render._draw_tile(x, constants.level_area[2], constants.frame_t)
+    render._draw_tile(x, constants.screen_size[2]-1, constants.frame_b)
+  end
+
+  for y=constants.level_area[2]+1, constants.screen_size[2]-2 do
+    render._draw_tile(0, y, constants.frame_l)
+    render._draw_tile(constants.level_area[1]-1, y, constants.frame_r)
+  end
 
   local hud_y = constants.level_area[2] + 1
 
@@ -130,9 +145,7 @@ render.render_level = function(state, render_tick)
       render._draw_on_tile(oxy_x - 1, hud_y, render.dead)
     end
   else
-
     local do_oxy = state.level_win or state.connected or render_tick % 60 < 30
-
 
     if do_oxy then
       for d=0, state.oxygen-1 do
@@ -141,6 +154,13 @@ render.render_level = function(state, render_tick)
       end
     end
   end
+end
+
+render.render = function(state, render_tick)
+  love.graphics.clear(16/255, 25/255, 28/255)
+
+  render._render_level(state)
+  render._render_gui(state, render_tick)
 end
 
 
