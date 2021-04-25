@@ -22,7 +22,7 @@ local levels =
 game_state.new = function()
   local state =
   {
-    level_index = 13,
+    level_index = 1,
 
     width = 0,
     height = 0,

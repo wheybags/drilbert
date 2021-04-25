@@ -15,6 +15,9 @@ render.setup = function()
   render.oxygen = render._load_tex("gfx/oxygen.png")
   render.dead = render._load_tex("gfx/dead.png")
 
+  render.level_messages = {}
+  render.level_messages[2] = render._load_tex("gfx/spacebar.png")
+
   render.tileset_quads = {}
 
   local w
@@ -140,6 +143,10 @@ render._render_gui = function(state, render_tick)
   for y=constants.level_area[2]+1, constants.screen_size[2]-2 do
     render._draw_tile(0, y, constants.frame_l)
     render._draw_tile(constants.level_area[1]-1, y, constants.frame_r)
+  end
+
+  if render.level_messages[state.level_index] and render_tick % 60 < 30 then
+    render._draw_on_tile(0, constants.level_area[2], render.level_messages[state.level_index])
   end
 
   local hud_y = constants.level_area[2] + 1
