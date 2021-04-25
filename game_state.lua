@@ -12,12 +12,17 @@ local levels =
   require("level.explain_push").layers[1],
   require("level.push_puzzle_basic").layers[1],
   require("level.winner").layers[1],
+  require("level.secret").layers[1],
+  require("level.puzzle_1").layers[1],
+  require("level.puzzle_2").layers[1],
+  require("level.puzzle_3").layers[1],
+  require("level.winner_2").layers[1],
 }
 
 game_state.new = function()
   local state =
   {
-    level_index = 1,
+    level_index = 13,
 
     width = 0,
     height = 0,
