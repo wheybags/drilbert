@@ -91,7 +91,12 @@ end
 render.render_level = function(state, render_tick)
   for y = 0, state.height-1 do
     for x = 0, state.width-1 do
-      render._draw_tile(x, y, game_state.index(state, x, y))
+      render._draw_tile(x, y, game_state.index(state, x, y, state.dirt_layer))
+
+      local real_tile = game_state.index(state, x, y)
+      if real_tile ~= constants.dirt_tile_id then
+        render._draw_tile(x, y, real_tile)
+      end
     end
   end
 

@@ -15,4 +15,24 @@ constants.max_oxygen = 6
 constants.level_area = {15, 15}
 constants.screen_size = {15, 18}
 
+
+constants.dirt_transitions = {}
+--                          UDLR
+constants.dirt_transitions["0000"] = 0
+constants.dirt_transitions["0001"] = 25
+constants.dirt_transitions["0010"] = 39
+constants.dirt_transitions["0011"] = 38
+constants.dirt_transitions["0100"] = 20
+constants.dirt_transitions["0101"] = 17
+constants.dirt_transitions["0110"] = 19
+constants.dirt_transitions["0111"] = 18
+constants.dirt_transitions["1000"] = 36
+constants.dirt_transitions["1001"] = 33
+constants.dirt_transitions["1010"] = 35
+constants.dirt_transitions["1011"] = 34
+constants.dirt_transitions["1100"] = 28
+constants.dirt_transitions["1101"] = 25
+constants.dirt_transitions["1110"] = 27
+constants.dirt_transitions["1111"] = 26
+
 return constants

@@ -22,6 +22,7 @@ game_state.new = function()
     width = 0,
     height = 0,
     data = {},
+    dirt_layer = {},
 
     player_pos = {0, 0},
     player_dir = "down",
@@ -65,20 +66,25 @@ game_state.next_level = function(state)
   game_state.load_level(state, state.level_index + 1)
 end
 
-game_state.index = function(level_data, x, y)
+game_state.index = function(level_data, x, y, data)
+  if data == nil then data = level_data.data end
+
   assert(x >= 0 and x < level_data.width)
   assert(y >= 0 and y < level_data.height)
 
   local index = (x + y * level_data.width) + 1
-  return level_data.data[index] - 1
+  return data[index] - 1
 end
 
-game_state._set = function(level_data, x, y, tile_id)
+game_state._set = function(level_data, x, y, tile_id, data)
+  if data == nil then data = level_data.data end
+
+  assert(tile_id ~= nil)
   assert(x >= 0 and x < level_data.width)
   assert(y >= 0 and y < level_data.height)
 
   local index = (x + y * level_data.width) + 1
-  level_data.data[index] = tile_id + 1
+  data[index] = tile_id + 1
 end
 
 game_state._get_target = function(state, offset)
@@ -190,6 +196,34 @@ game_state._on_update = function(state)
   state.connected = game_state._is_connected(state)
   if state.connected then
     state.oxygen = constants.max_oxygen
+  end
+
+  local get = function(x, y)
+    if x < 0 or x >= state.width or y < 0 or y >= state.height then
+      return "1"
+    end
+
+    local tile = game_state.index(state, x, y)
+    if tile == constants.air_tile_id or tile == constants.spawn_tile_id or tile == constants.exit_tile_id then
+      return "0"
+    end
+
+    return "1"
+  end
+
+  state.dirt_layer = {unpack(state.data)}
+  for y = 0, state.height-1 do
+    for x = 0, state.width-1 do
+
+      local tile = game_state.index(state, x, y)
+      if tile == constants.air_tile_id or tile == constants.spawn_tile_id or tile == constants.exit_tile_id then
+        game_state._set(state, x, y, constants.air_tile_id, state.dirt_layer)
+      else
+
+        local key = get(x,y-1) .. get(x,y+1) .. get(x-1,y) .. get(x+1,y)
+        game_state._set(state, x, y, constants.dirt_transitions[key], state.dirt_layer)
+      end
+    end
   end
 end
 
