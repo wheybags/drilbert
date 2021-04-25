@@ -2,6 +2,12 @@ local game_state = {}
 
 local constants = require("constants")
 
+local move_sfx = love.audio.newSource("/sfx/SFX_Jump_09.wav", "static")
+local drill_sfx = love.audio.newSource("/sfx/drill.wav", "static")
+local drop_sfx = love.audio.newSource("/sfx/drop.wav", "static")
+local level_complete_sfx = love.audio.newSource("/sfx/level_complete.wav", "static")
+local error_sfx = love.audio.newSource("/sfx/error_006.wav", "static")
+
 local levels =
 {
   require("level.basic_move").layers[1],
@@ -141,6 +147,7 @@ game_state.move = function(state, direction)
   local need_push = target_tile == constants.dirt_tile_id or target_tile == constants.stone_tile_id
 
   if need_push and target2_tile ~= constants.air_tile_id then
+    error_sfx:clone():play()
     return
   end
 
@@ -153,14 +160,17 @@ game_state.move = function(state, direction)
   target_tile = game_state.index(state, target[1], target[2])
 
   if target_tile ~= constants.air_tile_id and target_tile ~= constants.spawn_tile_id and target_tile ~= constants.exit_tile_id then
+    error_sfx:clone():play()
     return
   end
 
   state.player_pos = target
+  move_sfx:clone():play()
 
   game_state._on_update(state)
 
   if target_tile == constants.exit_tile_id and not state.dead then
+    level_complete_sfx:clone():play()
     game_state.next_level(state)
   end
 
@@ -184,18 +194,22 @@ game_state.activate = function(state)
 
   if target_tile == constants.dirt_tile_id then
     if state.dirt == constants.max_dirt then
+      error_sfx:clone():play()
       return
     end
 
     game_state._set(state, target[1], target[2], constants.air_tile_id)
     state.dirt = state.dirt + 1
+    drill_sfx:clone():play()
   elseif target_tile == constants.air_tile_id then
     if state.dirt == 0 then
+      error_sfx:clone():play()
       return
     end
 
     game_state._set(state, target[1], target[2], constants.dirt_tile_id)
     state.dirt = state.dirt - 1
+    drop_sfx:clone():play()
   end
 
   game_state._on_update(state)

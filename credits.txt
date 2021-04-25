@@ -1,0 +1,6 @@
+Music: Coming After You.wav by locomule: https://opengameart.org/content/coming-after-you
+Move sound: SFX_Jump_09.wav by jalastram: https://opengameart.org/content/8-bit-jump-1
+Drill sound derived from: doorOpen_1.ogg: https://www.kenney.nl/assets/rpg-audio
+Drop sound from: bookPlace2.ogg: https://www.kenney.nl/assets/rpg-audio
+Level complete sound from: question_001: https://www.kenney.nl/assets/rpg-audio
+Error sound from: error_006: https://www.kenney.nl/assets/rpg-audio

@@ -7,6 +7,10 @@ local render_tick = 0
 function love.load()
   render.setup()
   state = game_state.new()
+
+  local music = love.audio.newSource("/sfx/Coming After You.wav", "stream")
+  music:setLooping(true)
+  love.audio.play(music)
 end
 
 function love.draw()
