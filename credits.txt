@@ -7,3 +7,4 @@ Error sound from: error_006 by kenney: https://www.kenney.nl/assets/interface-so
 Rotate sound from: toggle_003 by kenney: https://www.kenney.nl/assets/interface-sounds
 Death sound from: 15_hit by shiru8bit: https://opengameart.org/content/nes-8-bit-sound-effects
 Secret sound from 24_levelclear by shiru8bit: https://opengameart.org/content/nes-8-bit-sound-effects
+Restart sound from 13_item1 by shiru8bit: https://opengameart.org/content/nes-8-bit-sound-effects

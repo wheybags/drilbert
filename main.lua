@@ -37,6 +37,8 @@ function love.resize()
 
 end
 
+local restart_sfx = love.audio.newSource("/sfx/13_item1.wav", "static")
+
 function love.keypressed(key)
   if key == "r" then
     music_normal()
@@ -45,6 +47,7 @@ function love.keypressed(key)
       state = game_state.new()
     end
 
+    restart_sfx:clone():play()
     game_state.load_level(state, state.level_index)
   end
 
