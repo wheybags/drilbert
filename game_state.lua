@@ -22,7 +22,10 @@ game_state.new = function()
     width = 0,
     height = 0,
     data = {},
+
     dirt_layer = {},
+    dirt_balls = {bs={}, fs={}},
+
     bedrock_layer = {},
 
     player_pos = {0, 0},
@@ -247,6 +250,8 @@ game_state._generate_dirt_transitions = function(state)
   end
 
   state.dirt_layer = {unpack(state.data)}
+  state.dirt_balls = {bs={}, fs={}}
+
   for y = 0, state.height-1 do
     for x = 0, state.width-1 do
 
@@ -254,6 +259,14 @@ game_state._generate_dirt_transitions = function(state)
       if tile == constants.air_tile_id or tile == constants.spawn_tile_id or tile == constants.exit_tile_id then
         game_state._set(state, x, y, constants.air_tile_id, state.dirt_layer)
       else
+
+        if get(x, y-1) == "0" and get(x-1, y) == "0" and get(x-1, y-1) == "1" then
+          table.insert(state.dirt_balls.bs, {x-0.5, y-0.5})
+        end
+
+        if get(x, y-1) == "0" and get(x+1, y) == "0" and get(x+1, y-1) == "1" then
+          table.insert(state.dirt_balls.fs, {x+0.5, y-0.5})
+        end
 
         local key = get(x,y-1) .. get(x,y+1) .. get(x-1,y) .. get(x+1,y)
         game_state._set(state, x, y, constants.dirt_transitions[key], state.dirt_layer)

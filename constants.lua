@@ -15,6 +15,8 @@ constants.max_oxygen = 6
 constants.level_area = {15, 15}
 constants.screen_size = {15, 18}
 
+constants.dirt_backslash = 16
+constants.dirt_slash = 24
 
 constants.dirt_transitions = {}
 --                          UDLR
@@ -54,5 +56,14 @@ constants.bedrock_transitions["1100"] = constants.dirt_transitions["1100"] + bed
 constants.bedrock_transitions["1101"] = constants.dirt_transitions["1101"] + bedrock_gap
 constants.bedrock_transitions["1110"] = constants.dirt_transitions["1110"] + bedrock_gap
 constants.bedrock_transitions["1111"] = constants.dirt_transitions["1111"] + bedrock_gap
+
+constants.frame_tl = 13
+constants.frame_t = 14
+constants.frame_tr = 15
+constants.frame_l = 21
+constants.frame_bl = 29
+constants.frame_b = 30
+constants.frame_br = 31
+constants.frame_r = 23
 
 return constants
