@@ -35,6 +35,15 @@ render.setup = function()
     end
   end
 
+  if love.system.getOS() == "Windows" then
+    local ffi = require("ffi")
+    ffi.cdef[[
+    int SetProcessDPIAware();
+    ]]
+
+    ffi.C.SetProcessDPIAware()
+  end
+
   local _, _, flags = love.window.getMode()
   local width, height = love.window.getDesktopDimensions(flags.display)
 
@@ -47,7 +56,8 @@ render.setup = function()
   render.scale = 1
 
   while true do
-    local next_size = {size[1] * render.scale, size[2] * render.scale}
+    local next_size = {size[1] * (render.scale+1), size[2] * (render.scale+1)}
+
     if next_size[1] > usable_width or next_size[2] > usable_height then
       break
     end
