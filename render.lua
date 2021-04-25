@@ -89,12 +89,15 @@ render._draw_on_tile = function(x, y, image, rotation_deg)
 end
 
 render.render_level = function(state, render_tick)
+  love.graphics.clear(16/255, 25/255, 28/255)
+
   for y = 0, state.height-1 do
     for x = 0, state.width-1 do
       render._draw_tile(x, y, game_state.index(state, x, y, state.dirt_layer))
+      render._draw_tile(x, y, game_state.index(state, x, y, state.bedrock_layer))
 
       local real_tile = game_state.index(state, x, y)
-      if real_tile ~= constants.dirt_tile_id then
+      if real_tile ~= constants.dirt_tile_id and real_tile ~= constants.bedrock_tile_id then
         render._draw_tile(x, y, real_tile)
       end
     end

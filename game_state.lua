@@ -23,6 +23,7 @@ game_state.new = function()
     height = 0,
     data = {},
     dirt_layer = {},
+    bedrock_layer = {},
 
     player_pos = {0, 0},
     player_dir = "down",
@@ -198,6 +199,40 @@ game_state._on_update = function(state)
     state.oxygen = constants.max_oxygen
   end
 
+  game_state._generate_dirt_transitions(state)
+  game_state._generate_bedrock_transitions(state)
+end
+
+game_state._generate_bedrock_transitions = function(state)
+  local get = function(x, y)
+    if x < 0 or x >= state.width or y < 0 or y >= state.height then
+      return "1"
+    end
+
+    local tile = game_state.index(state, x, y)
+    if tile == constants.bedrock_tile_id then
+      return "1"
+    end
+
+    return "0"
+  end
+
+  state.bedrock_layer = {unpack(state.data)}
+  for y = 0, state.height-1 do
+    for x = 0, state.width-1 do
+
+      local tile = game_state.index(state, x, y)
+      if tile ~= constants.bedrock_tile_id then
+        game_state._set(state, x, y, constants.air_tile_id, state.bedrock_layer)
+      else
+        local key = get(x,y-1) .. get(x,y+1) .. get(x-1,y) .. get(x+1,y)
+        game_state._set(state, x, y, constants.bedrock_transitions[key], state.bedrock_layer)
+      end
+    end
+  end
+end
+
+game_state._generate_dirt_transitions = function(state)
   local get = function(x, y)
     if x < 0 or x >= state.width or y < 0 or y >= state.height then
       return "1"
@@ -226,6 +261,7 @@ game_state._on_update = function(state)
     end
   end
 end
+
 
 game_state._is_connected = function(state)
   local spawn_pos
