@@ -16,6 +16,7 @@ render.setup = function()
   render.dead = render._load_tex("gfx/dead.png")
 
   render.level_messages = {}
+  render.level_messages[1] = render._load_tex("gfx/arrows.png")
   render.level_messages[2] = render._load_tex("gfx/spacebar.png")
 
   render.logo = {
