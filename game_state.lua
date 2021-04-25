@@ -7,6 +7,9 @@ local drill_sfx = love.audio.newSource("/sfx/drill.wav", "static")
 local drop_sfx = love.audio.newSource("/sfx/drop.wav", "static")
 local level_complete_sfx = love.audio.newSource("/sfx/level_complete.wav", "static")
 local error_sfx = love.audio.newSource("/sfx/error_006.wav", "static")
+local rotate_sfx = love.audio.newSource("/sfx/rotate.wav", "static")
+local die_sfx = love.audio.newSource("/sfx/15_hit.wav", "static")
+local secret_sfx = love.audio.newSource("/sfx/24_levelclear.wav", "static")
 
 local levels =
 {
@@ -132,6 +135,7 @@ game_state.move = function(state, direction)
 
   if state.player_dir ~= direction then
     state.player_dir = direction
+    rotate_sfx:clone():play()
     return
   end
 
@@ -170,7 +174,13 @@ game_state.move = function(state, direction)
   game_state._on_update(state)
 
   if target_tile == constants.exit_tile_id and not state.dead then
-    level_complete_sfx:clone():play()
+
+    if state.level_index == 8 then
+      secret_sfx:clone():play()
+    else
+      level_complete_sfx:clone():play()
+    end
+
     game_state.next_level(state)
   end
 
@@ -178,6 +188,8 @@ game_state.move = function(state, direction)
     state.oxygen = state.oxygen - 1
     if state.oxygen == 0 then
       state.dead = true
+      mod_music()
+      die_sfx:clone():play()
     end
   end
 end

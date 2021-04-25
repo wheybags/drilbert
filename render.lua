@@ -145,7 +145,7 @@ render._render_gui = function(state, render_tick)
     render._draw_tile(constants.level_area[1]-1, y, constants.frame_r)
   end
 
-  if render.level_messages[state.level_index] and render_tick % 60 < 30 then
+  if not state.dead and render.level_messages[state.level_index] and render_tick % 60 < 30 then
     render._draw_on_tile(0, constants.level_area[2], render.level_messages[state.level_index])
   end
 

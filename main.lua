@@ -4,13 +4,25 @@ local game_state = require("game_state")
 local state
 local render_tick = 0
 
+local music
+
+mod_music = function()
+  music:setVolume(0.8)
+  music:setPitch(0.7)
+end
+
+music_normal = function()
+  music:setVolume(1)
+  music:setPitch(1)
+end
+
 function love.load()
   render.setup()
   state = game_state.new()
 
-  local music = love.audio.newSource("/sfx/Coming After You.wav", "stream")
+  music = love.audio.newSource("/sfx/Coming After You.wav", "stream")
   music:setLooping(true)
-  love.audio.play(music)
+  music:play()
 end
 
 function love.draw()
@@ -33,6 +45,7 @@ function love.keypressed(key)
   end
 
   if key == "r" then
+    music_normal()
     game_state.load_level(state, state.level_index)
   end
 end
