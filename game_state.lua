@@ -144,15 +144,15 @@ game_state.move = function(state, direction)
 
   game_state._on_update(state)
 
+  if target_tile == constants.exit_tile_id and not state.dead then
+    game_state.next_level(state)
+  end
+
   if not state.connected then
     state.oxygen = state.oxygen - 1
     if state.oxygen == 0 then
       state.dead = true
     end
-  end
-
-  if target_tile == constants.exit_tile_id and not state.dead then
-    game_state.next_level(state)
   end
 end
 
