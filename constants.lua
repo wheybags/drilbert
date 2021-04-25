@@ -15,6 +15,8 @@ constants.max_oxygen = 6
 constants.level_area = {15, 15}
 constants.screen_size = {15, 18}
 
+constants.dirt_backslash = 16
+constants.dirt_slash = 24
 
 constants.dirt_transitions = {}
 --                          UDLR

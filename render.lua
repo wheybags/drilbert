@@ -92,6 +92,18 @@ render._render_level = function(state)
   for y = 0, state.height-1 do
     for x = 0, state.width-1 do
       render._draw_tile(x, y, game_state.index(state, x, y, state.dirt_layer))
+    end
+  end
+  for _, ball_pos in pairs(state.dirt_balls.bs) do
+    render._draw_tile(ball_pos[1], ball_pos[2], constants.dirt_backslash)
+  end
+  for _, ball_pos in pairs(state.dirt_balls.fs) do
+    render._draw_tile(ball_pos[1], ball_pos[2], constants.dirt_slash)
+  end
+
+
+  for y = 0, state.height-1 do
+    for x = 0, state.width-1 do
       render._draw_tile(x, y, game_state.index(state, x, y, state.bedrock_layer))
 
       local real_tile = game_state.index(state, x, y)
