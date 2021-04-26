@@ -19,6 +19,7 @@ render.setup = function()
   render.level_messages[1] = render._load_tex("gfx/arrows.png")
   render.level_messages[2] = render._load_tex("gfx/spacebar.png")
   render.level_messages[3] = render._load_tex("gfx/block_oxy.png")
+  render.level_messages[4] = render._load_tex("gfx/block_oxy.png")
 
   render.logo = {
     render._load_tex("gfx/logo_01.png"),
