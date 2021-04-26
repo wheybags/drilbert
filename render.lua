@@ -14,12 +14,12 @@ render.setup = function()
   render.player = render._load_tex("gfx/player.png")
   render.oxygen = render._load_tex("gfx/oxygen.png")
   render.dead = render._load_tex("gfx/dead.png")
+  render.block_oxy = render._load_tex("gfx/block_oxy.png")
 
   render.level_messages = {}
   render.level_messages[1] = render._load_tex("gfx/arrows.png")
   render.level_messages[2] = render._load_tex("gfx/spacebar.png")
-  render.level_messages[3] = render._load_tex("gfx/block_oxy.png")
-  render.level_messages[4] = render._load_tex("gfx/block_oxy.png")
+  render.level_messages[7] = render._load_tex("gfx/push.png")
 
   render.logo = {
     render._load_tex("gfx/logo_01.png"),
@@ -190,6 +190,11 @@ render._render_gui = function(state, render_tick)
       render._draw_on_tile(oxy_x - 1, hud_y, render.dead)
     end
   else
+
+    if not state.connected then
+      render._draw_on_tile(0, constants.level_area[2], render.block_oxy)
+    end
+
     local do_oxy = state.level_win or state.connected or render_tick % 60 < 30
 
     if do_oxy then

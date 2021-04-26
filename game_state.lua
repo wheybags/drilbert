@@ -16,9 +16,11 @@ local levels =
   require("level.basic_move").layers[1],
   require("level.basic_dig").layers[1],
   require("level.place_dirt").layers[1],
-  require("level.gather_oxygen").layers[1],
+  require("level.dig_long").layers[1],
+  require("level.grab_1_oxy").layers[1],
   require("level.explain_3").layers[1],
   require("level.explain_push").layers[1],
+  require("level.gather_oxygen").layers[1],
   require("level.push_puzzle_basic").layers[1],
   require("level.winner").layers[1],
   require("level.secret").layers[1],
@@ -148,7 +150,7 @@ game_state.move = function(state, direction)
   local target2_tile
   if target2 ~= nil then target2_tile = game_state.index(state, target2[1], target2[2]) end
 
-  local need_push = target_tile == constants.dirt_tile_id or target_tile == constants.stone_tile_id
+  local need_push = target_tile == constants.stone_tile_id
 
   if need_push and target2_tile ~= constants.air_tile_id then
     error_sfx:clone():play()
@@ -175,7 +177,7 @@ game_state.move = function(state, direction)
 
   if target_tile == constants.exit_tile_id and not state.dead then
 
-    if state.level_index == 8 then
+    if state.level_index == 10 then
       secret_sfx:clone():play()
     else
       level_complete_sfx:clone():play()
